@@ -12,3 +12,5 @@ cd website
 npm install
 npm start
 ```
+
+For production website builds, set `VITE_SERVER_URL` to the Socket.IO server URL.
