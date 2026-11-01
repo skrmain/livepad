@@ -15,18 +15,51 @@ import Settings from './components/Settings';
 
 const SettingsModal = ModalWrapper(Settings);
 const RoomInfoModal = ModalWrapper(RoomInfo);
-const LOCAL_DATA_KEY = 'livepad-data';
+const LOCAL_DATA_KEY = 'notepad-data';
 const EDITABLE_FILE_EXTENSIONS = [
-    '.txt', '.md', '.markdown', '.js', '.jsx', '.ts', '.tsx', '.json', '.html', '.htm', '.css', '.scss',
-    '.xml', '.csv', '.yaml', '.yml', '.toml', '.py', '.java', '.c', '.h', '.cpp', '.go', '.rs', '.sh',
-    '.sql', '.log', '.ini', '.conf'
+    '.txt',
+    '.md',
+    '.markdown',
+    '.js',
+    '.jsx',
+    '.ts',
+    '.tsx',
+    '.json',
+    '.html',
+    '.htm',
+    '.css',
+    '.scss',
+    '.xml',
+    '.csv',
+    '.yaml',
+    '.yml',
+    '.toml',
+    '.py',
+    '.java',
+    '.c',
+    '.h',
+    '.cpp',
+    '.go',
+    '.rs',
+    '.sh',
+    '.sql',
+    '.log',
+    '.ini',
+    '.conf',
 ];
 const TEXT_FILE_MIME_TYPES = [
-    'application/json', 'application/javascript', 'application/xml', 'application/yaml', 'application/x-yaml',
-    'application/sql', 'application/toml', 'application/x-shellscript', 'application/x-python'
+    'application/json',
+    'application/javascript',
+    'application/xml',
+    'application/yaml',
+    'application/x-yaml',
+    'application/sql',
+    'application/toml',
+    'application/x-shellscript',
+    'application/x-python',
 ];
 
-const getStoredRoomData = roomId => {
+const getStoredRoomData = (roomId) => {
     try {
         const storedData = JSON.parse(localStorage.getItem(LOCAL_DATA_KEY) || '{}');
         const roomData = storedData[roomId];
@@ -53,7 +86,7 @@ const storeRoomData = (roomId, data) => {
     }
 };
 
-const removeStoredRoomData = roomId => {
+const removeStoredRoomData = (roomId) => {
     try {
         const storedData = JSON.parse(localStorage.getItem(LOCAL_DATA_KEY) || '{}');
         if (storedData && typeof storedData === 'object' && !Array.isArray(storedData)) {
@@ -76,7 +109,7 @@ const App = () => {
     const [fileError, setFileError] = useState('');
     const [settings, setSettings] = useState(defaultSettings);
     const [systemTheme, setSystemTheme] = useState(() =>
-        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
     );
     const [currentModal, setCurrentModal] = useState('');
     const [previewVisible, setPreviewVisible] = useState(false);
@@ -100,12 +133,12 @@ const App = () => {
         setSettings(_settings);
     };
 
-    const handleChange = event => {
+    const handleChange = (event) => {
         const { value } = event.target;
         const nextData = {
             ...dataRef.current,
             value,
-            lastUpdate: Math.max(Date.now(), (Number(dataRef.current.lastUpdate) || 0) + 1)
+            lastUpdate: Math.max(Date.now(), (Number(dataRef.current.lastUpdate) || 0) + 1),
         };
 
         dataRef.current = nextData;
@@ -132,7 +165,7 @@ const App = () => {
         handleChange({ target: { value: '' } });
     };
 
-    const handleRoomJoin = newRoomId => {
+    const handleRoomJoin = (newRoomId) => {
         if (newRoomId) {
             const localData = getStoredRoomData(newRoomId) || { ...defaultDataValue, lastUpdate: 0 };
 
@@ -153,17 +186,19 @@ const App = () => {
         try {
             const [fileHandle] = await window.showOpenFilePicker({
                 multiple: false,
-                types: [{
-                    description: 'Editable text files',
-                    accept: { 'text/plain': EDITABLE_FILE_EXTENSIONS }
-                }]
+                types: [
+                    {
+                        description: 'Editable text files',
+                        accept: { 'text/plain': EDITABLE_FILE_EXTENSIONS },
+                    },
+                ],
             });
             const extension = fileHandle.name.slice(fileHandle.name.lastIndexOf('.')).toLowerCase();
             if (!EDITABLE_FILE_EXTENSIONS.includes(extension)) {
                 setFileError('Choose an editable text file.');
                 return;
             }
-            if (await fileHandle.requestPermission({ mode: 'readwrite' }) !== 'granted') {
+            if ((await fileHandle.requestPermission({ mode: 'readwrite' })) !== 'granted') {
                 setFileError('Write permission is required to edit this file.');
                 return;
             }
@@ -206,7 +241,7 @@ const App = () => {
         }
     };
 
-    const resolveConflict = keepCurrentRoom => {
+    const resolveConflict = (keepCurrentRoom) => {
         const currentConflict = pendingConflictRef.current;
         if (!currentConflict) return;
 
@@ -218,7 +253,7 @@ const App = () => {
         if (keepCurrentRoom) {
             const nextData = {
                 ...currentData,
-                lastUpdate: Math.max(Date.now(), currentData.lastUpdate + 1, latestServerData.lastUpdate + 1)
+                lastUpdate: Math.max(Date.now(), currentData.lastUpdate + 1, latestServerData.lastUpdate + 1),
             };
             dataRef.current = nextData;
             setData(nextData);
@@ -241,7 +276,7 @@ const App = () => {
     const closeModal = () => setCurrentModal('');
     const previewType = getPreviewType(data.value, fileName);
 
-    const handleResponse = response => {
+    const handleResponse = (response) => {
         if (response.status && response.data) {
             const responseData = response.data;
             const responseRoomId = responseData.roomId || 'default';
@@ -251,7 +286,7 @@ const App = () => {
 
             const serverData = {
                 value: responseData.value || '',
-                lastUpdate: Number(responseData.lastUpdate) || 0
+                lastUpdate: Number(responseData.lastUpdate) || 0,
             };
             serverDataRef.current[responseRoomId] = serverData;
             const localData = dataRef.current;
@@ -318,7 +353,7 @@ const App = () => {
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const updateSystemTheme = event => setSystemTheme(event.matches ? 'dark' : 'light');
+        const updateSystemTheme = (event) => setSystemTheme(event.matches ? 'dark' : 'light');
 
         mediaQuery.addEventListener('change', updateSystemTheme);
         return () => mediaQuery.removeEventListener('change', updateSystemTheme);
@@ -338,10 +373,12 @@ const App = () => {
                 fileError={fileError}
                 hasPreview={Boolean(previewType)}
                 previewVisible={previewVisible}
-                togglePreview={() => setPreviewVisible(visible => !visible)}
+                togglePreview={() => setPreviewVisible((visible) => !visible)}
                 supportsFilePicker={typeof window.showOpenFilePicker === 'function'}
                 isConnected={isConnected}
-                toggleConnection={() => socketRef.current?.connected ? socketRef.current.disconnect() : socketRef.current?.connect()}
+                toggleConnection={() =>
+                    socketRef.current?.connected ? socketRef.current.disconnect() : socketRef.current?.connect()
+                }
             />
             {currentModal === '' && (
                 <main className={`editor-layout${previewVisible && previewType ? ' preview-visible' : ''}`}>
@@ -354,13 +391,17 @@ const App = () => {
                     {previewVisible && previewType && <Preview type={previewType} value={data.value} />}
                 </main>
             )}
-            {currentModal === 'RoomInfo' && <RoomInfoModal handleRoomJoin={handleRoomJoin} closeModal={closeModal} roomId={roomId} />}
-            {currentModal === 'Settings' && <SettingsModal closeModal={closeModal} settings={settings} setSettings={setSettings} />}
+            {currentModal === 'RoomInfo' && (
+                <RoomInfoModal handleRoomJoin={handleRoomJoin} closeModal={closeModal} roomId={roomId} />
+            )}
+            {currentModal === 'Settings' && (
+                <SettingsModal closeModal={closeModal} settings={settings} setSettings={setSettings} />
+            )}
             <dialog
                 ref={conflictDialogRef}
                 className="conflict-dialog"
                 aria-labelledby="conflict-title"
-                onCancel={event => event.preventDefault()}
+                onCancel={(event) => event.preventDefault()}
             >
                 <h2 id="conflict-title">Different content in this room</h2>
                 <p>Replace the shared content with your current text, or keep it in a new room?</p>

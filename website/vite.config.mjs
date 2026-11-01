@@ -12,11 +12,13 @@ const offlineCachePlugin = {
         const basePath = base.endsWith('/') ? base : `${base}/`;
         const precacheUrls = [
             `${basePath}index.html`,
-            ...Object.keys(bundle).map(file => `${basePath}${file}`),
-            ...['favicon.ico', 'manifest.json', 'logo192.png', 'logo512.png', 'robots.txt'].map(file => `${basePath}${file}`)
+            ...Object.keys(bundle).map((file) => `${basePath}${file}`),
+            ...['favicon.ico', 'manifest.json', 'logo192.png', 'logo512.png', 'robots.txt'].map(
+                (file) => `${basePath}${file}`,
+            ),
         ];
         const workerSource = `
-const CACHE_NAME = 'livepad-shell-v2';
+const CACHE_NAME = 'notepad-shell-v2';
 const PRECACHE_URLS = ${JSON.stringify(precacheUrls)};
 const BOOTSTRAP_URL = 'https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css';
 
@@ -34,7 +36,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
     event.waitUntil((async () => {
         const cacheNames = await caches.keys();
-        await Promise.all(cacheNames.filter(name => name.startsWith('livepad-') && name !== CACHE_NAME).map(name => caches.delete(name)));
+        await Promise.all(cacheNames.filter(name => name.startsWith('notepad-') && name !== CACHE_NAME).map(name => caches.delete(name)));
         await self.clients.claim();
     })());
 });
@@ -72,9 +74,9 @@ self.addEventListener('fetch', event => {
 `;
 
         this.emitFile({ type: 'asset', fileName: 'sw.js', source: workerSource });
-    }
+    },
 };
 
 export default defineConfig({
-    plugins: [react(), offlineCachePlugin]
+    plugins: [react(), offlineCachePlugin],
 });

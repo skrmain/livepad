@@ -1,6 +1,6 @@
 {
-    "short_name": "livepad",
-    "name": "livepad",
+    "short_name": "notepad",
+    "name": "notepad",
     "icons": [
         {
             "src": "favicon.ico",
