@@ -12,13 +12,14 @@ const previewTypes = {
 };
 
 function escapeHtml(value) {
-    return value
-        .replace(/\u0000/g, '&#xfffd;')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+    return value.replace(/[&<>"'\u0000]/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '\u0000': '&#xfffd;'
+    })[character]);
 }
 
 function markdownInline(value) {
