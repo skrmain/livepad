@@ -2,13 +2,7 @@ import React from 'react';
 
 const TextArea = ({ handleChange, value, themeColor, fontSize }) => {
     return (
-        <div
-            style={{
-                height: '100%',
-                padding: '.3rem',
-                backgroundImage: 'linear-gradient(to bottom, white, black)'
-            }}
-        >
+        <div className="editor-pane">
             <textarea
                 name="data"
                 id="dataContainer"
@@ -18,7 +12,7 @@ const TextArea = ({ handleChange, value, themeColor, fontSize }) => {
                 value={value}
                 onChange={handleChange}
                 placeholder="Type here"
-            ></textarea>
+            />
         </div>
     );
 };

@@ -6,7 +6,9 @@ import { config, defaultDataValue, defaultSettings, themeColor } from './constan
 
 import NavBar from './components/NavBar';
 import TextArea from './components/TextArea';
+import Preview from './components/Preview';
 import ModalWrapper from './components/ModalWrapper';
+import { getPreviewType } from './utils/preview';
 
 import RoomInfo from './components/RoomInfo';
 import Settings from './components/Settings';
@@ -77,6 +79,7 @@ const App = () => {
         window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     );
     const [currentModal, setCurrentModal] = useState('');
+    const [previewVisible, setPreviewVisible] = useState(false);
     const [conflict, setConflict] = useState(null);
     const dataRef = useRef(data);
     const roomIdRef = useRef(roomId);
@@ -236,6 +239,7 @@ const App = () => {
     const copyAllText = () => navigator.clipboard.writeText(data.value);
 
     const closeModal = () => setCurrentModal('');
+    const previewType = getPreviewType(data.value, fileName);
 
     const handleResponse = response => {
         if (response.status && response.data) {
@@ -321,7 +325,7 @@ const App = () => {
     }, []);
 
     return (
-        <div style={{ height: '100vh' }}>
+        <div className="app-shell">
             <NavBar
                 usersCount={usersCount}
                 roomId={roomId}
@@ -332,17 +336,23 @@ const App = () => {
                 openFile={openFile}
                 fileName={fileName}
                 fileError={fileError}
+                hasPreview={Boolean(previewType)}
+                previewVisible={previewVisible}
+                togglePreview={() => setPreviewVisible(visible => !visible)}
                 supportsFilePicker={typeof window.showOpenFilePicker === 'function'}
                 isConnected={isConnected}
                 toggleConnection={() => socketRef.current?.connected ? socketRef.current.disconnect() : socketRef.current?.connect()}
             />
             {currentModal === '' && (
-                <TextArea
-                    value={data.value}
-                    handleChange={handleChange}
-                    fontSize={settings.fontSize}
-                    themeColor={themeColor[settings.theme === 'system' ? systemTheme : settings.theme]}
-                />
+                <main className={`editor-layout${previewVisible && previewType ? ' preview-visible' : ''}`}>
+                    <TextArea
+                        value={data.value}
+                        handleChange={handleChange}
+                        fontSize={settings.fontSize}
+                        themeColor={themeColor[settings.theme === 'system' ? systemTheme : settings.theme]}
+                    />
+                    {previewVisible && previewType && <Preview type={previewType} value={data.value} />}
+                </main>
             )}
             {currentModal === 'RoomInfo' && <RoomInfoModal handleRoomJoin={handleRoomJoin} closeModal={closeModal} roomId={roomId} />}
             {currentModal === 'Settings' && <SettingsModal closeModal={closeModal} settings={settings} setSettings={setSettings} />}

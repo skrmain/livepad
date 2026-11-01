@@ -18,21 +18,26 @@ const NavBar = ({
     supportsFilePicker,
     openFile,
     fileName,
-    fileError
+    fileError,
+    hasPreview,
+    previewVisible,
+    togglePreview
 }) => {
     return (
         <nav className="navbar navbar-light my-navbar">
-            <span className="navbar-brand" style={{ fontSize: '1.5rem', color: 'white' }}>
-                {document.title}
-            </span>
-            <span className={`connection-status ${isConnected ? 'connected' : 'disconnected'}`} role="status">
-                <span className="connection-indicator" aria-hidden="true" />
-                {isConnected ? 'Connected' : 'Offline'}
-            </span>
-            <a href="https://github.com/skrmain/LiveNotepad" target="_blank" title="GitHub" rel="noopener noreferrer">
-                <img src={GitHub} alt="GitHub" />
-            </a>
+            <div className="navbar-brand-area">
+                <span className="navbar-brand">
+                    {document.title}
+                </span>
+                <span className={`connection-status ${isConnected ? 'connected' : 'disconnected'}`} role="status">
+                    <span className="connection-indicator" aria-hidden="true" />
+                    {isConnected ? 'Connected' : 'Offline'}
+                </span>
+            </div>
             <div className="nav-action-container">
+                <a href="https://github.com/skrmain/LiveNotepad" target="_blank" title="GitHub" rel="noopener noreferrer">
+                    <img src={GitHub} alt="GitHub" />
+                </a>
                 <button onClick={cutAllText} title="Cut all text">
                     <img src={Cut} alt="Cut" style={{ width: '25px', height: '25px' }} />
                 </button>
@@ -46,6 +51,11 @@ const NavBar = ({
                     </>
                 )}
                 {fileError && <span className="file-error" role="alert">{fileError}</span>}
+                {hasPreview && (
+                    <button onClick={togglePreview} aria-pressed={previewVisible}>
+                        {previewVisible ? 'Hide preview' : 'Show preview'}
+                    </button>
+                )}
                 {isConnected && (
                     <button onClick={openRoomInfo} title="People">
                         <img src={People} alt="People" />
