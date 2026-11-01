@@ -34,6 +34,29 @@ button {
     left: -0.1rem;
 }
 
+.connection-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: white;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.connection-indicator {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+}
+
+.connection-status.connected .connection-indicator {
+    background-color: #28a745;
+}
+
+.connection-status.disconnected .connection-indicator {
+    background-color: #dc3545;
+}
+
 .nav-action-container {
     width: 100%;
     display: flex;
