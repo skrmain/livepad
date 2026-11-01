@@ -4,11 +4,12 @@
 
 ```sh
 # For server
+cd server
 npm install
 npm run dev
 
 # For website
-cd website
+cd ../website
 npm install
 npm run dev
 ```
