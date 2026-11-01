@@ -1,8 +1,8 @@
 const http = require('http');
 const socketIO = require('socket.io');
 
-const { addNewRoom, getRoomData, isRoomExists, addUserToRoom, removeUserFromRoom, updateRoomData } = require('./server/store');
-const { successResponse } = require('./server/utils');
+const { addNewRoom, getRoomData, isRoomExists, addUserToRoom, removeUserFromRoom, updateRoomData } = require('./store');
+const { successResponse } = require('./utils');
 
 const PORT = process.env.PORT || 8000;
 

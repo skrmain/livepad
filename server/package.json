@@ -1,13 +1,13 @@
 {
     "name": "livepad",
     "version": "0.0.1",
-    "main": "server.js",
+    "main": "src/index.js",
     "engines": {
         "node": "24"
     },
     "scripts": {
-        "start": "node server.js",
-        "dev": "node --watch server.js"
+        "start": "node src/index.js",
+        "dev": "node --watch src/index.js"
     },
     "dependencies": {
         "socket.io": "^4.5.4"
