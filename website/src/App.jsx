@@ -22,6 +22,9 @@ const App = () => {
     const [usersCount, setUsersCount] = useState(0);
     const [socket, setSocket] = useState();
     const [settings, setSettings] = useState(defaultSettings);
+    const [systemTheme, setSystemTheme] = useState(() =>
+        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    );
     const [currentModal, setCurrentModal] = useState('Connecting');
 
     const setSettingsFromLocalStorage = () => {
@@ -98,6 +101,14 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const updateSystemTheme = event => setSystemTheme(event.matches ? 'dark' : 'light');
+
+        mediaQuery.addEventListener('change', updateSystemTheme);
+        return () => mediaQuery.removeEventListener('change', updateSystemTheme);
+    }, []);
+
     return (
         <div style={{ height: '100vh' }}>
             <NavBar
@@ -110,7 +121,12 @@ const App = () => {
             />
             {currentModal === 'Connecting' && <ConnectingModal />}
             {currentModal === '' && (
-                <TextArea value={data.value} handleChange={handleChange} fontSize={settings.fontSize} themeColor={themeColor[settings.theme]} />
+                <TextArea
+                    value={data.value}
+                    handleChange={handleChange}
+                    fontSize={settings.fontSize}
+                    themeColor={themeColor[settings.theme === 'system' ? systemTheme : settings.theme]}
+                />
             )}
             {currentModal === 'RoomInfo' && <RoomInfoModal handleRoomJoin={handleRoomJoin} closeModal={closeModal} roomId={roomId} />}
             {currentModal === 'Settings' && <SettingsModal closeModal={closeModal} settings={settings} setSettings={setSettings} />}

@@ -14,7 +14,7 @@ export const themeColor = {
 };
 
 export const defaultSettings = {
-    theme: 'light',
+    theme: 'system',
     fontSize: 16
     // saveLocal: false,
 };
