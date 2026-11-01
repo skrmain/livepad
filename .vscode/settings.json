@@ -1,6 +1,4 @@
 {
-  "editor.formatOnSave": true,
-  "cSpell.words": [
-    "Collab"
-  ]
+    "editor.formatOnSave": true,
+    "cSpell.words": ["Collab", "livepad"]
 }
