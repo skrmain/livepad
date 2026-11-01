@@ -58,7 +58,7 @@ self.addEventListener('fetch', event => {
             const response = await fetch(request);
             if (!isNavigation && (response.ok || response.type === 'opaque')) {
                 const cache = await caches.open(CACHE_NAME);
-                cache.put(request, response.clone());
+                await cache.put(request, response.clone());
             }
             return response;
         } catch (error) {
