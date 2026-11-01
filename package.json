@@ -1,27 +1,15 @@
 {
-    "name": "server",
-    "version": "1.0.0",
-    "description": "",
+    "name": "livepad",
+    "version": "0.0.1",
     "main": "server.js",
     "engines": {
-        "node": "19.x"
+        "node": "24"
     },
     "scripts": {
         "start": "node server.js",
-        "start:dev": "nodemon server.js"
+        "dev": "node --watch server.js"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "socket.io": "^4.5.4"
-    },
-    "devDependencies": {
-        "nodemon": "^2.0.20"
-    },
-    "nodemonConfig": {
-        "ignore": [
-            "website/**"
-        ]
     }
 }
