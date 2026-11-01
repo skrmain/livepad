@@ -67,6 +67,19 @@ button {
     margin-right: 1rem;
 }
 
+.file-name {
+    color: white;
+    max-width: 10rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-error {
+    color: #ff8a8a;
+    font-size: 0.8rem;
+}
+
 /* My-Modal */
 
 .my-modal-background {
@@ -121,6 +134,33 @@ button {
     height: 2.5rem;
     padding-left: 0.3rem;
     border-radius: 5px;
+}
+
+.conflict-dialog {
+    background-color: #222;
+    border: 1px solid #888;
+    border-radius: 0.5rem;
+    color: white;
+    max-width: min(28rem, calc(100vw - 2rem));
+    padding: 1.5rem;
+}
+
+.conflict-dialog::backdrop {
+    background-color: rgb(0 0 0 / 65%);
+}
+
+.conflict-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.conflict-actions button {
+    background-color: white;
+    border-radius: 0.25rem;
+    color: black;
+    padding: 0.5rem 0.75rem;
 }
 
 /* Settings */
